@@ -2,11 +2,11 @@ import os
 import sys
 import dvfile as df
 
-#使用dv文件制作lrc歌词，依赖dvfile模块
+#使用dv文件制作lrc歌词，依赖dvfile模块>=0.0.6版本
 #使用方法：python dvlrc.py xxx.dv，选择音轨，在弹出的记事本窗口中用换行断句，保存。lrc文件将输出至原dv文件夹下。
-#默认在windows下运行，如果需要在其他操作系统下运行，请重写texteditor函数（打开文本编辑器编辑输入字符串，并返回编辑后的字符串）
+#默认在windows下运行，如果需要在其他操作系统下运行，请修改texteditor函数（打开文本编辑器编辑输入字符串，并按行返回编辑后的字符串列表）
 def texteditor(text):
-    tempfilename=sys.argv[0]+".temp.txt"
+    tempfilename=sys.argv[0]+".temp"
     with open(tempfilename,"w",encoding="utf8") as tempfile:
         tempfile.write(text)
     os.system("notepad "+tempfilename)
@@ -14,8 +14,11 @@ def texteditor(text):
         lines=tempfile.readlines()
     return lines
 
-
-filename=sys.argv[1]
+print("dvlrc:由dv文件制作lrc歌词")
+if(len(sys.argv)==1):
+    filename=input("请输入dv文件位置")
+else:
+    filename=sys.argv[1].replace('"',"")
 dvfile=df.opendv(filename)
 if(len(dvfile.track)>1):
     print("输入的工程有{}个音轨：".format(len(dvfile.track)))
@@ -28,16 +31,15 @@ else:
     tr=dvfile.track[0]
 for i in tr.segment:
     i.cut()
-seg=sum(tr.segment,df.Dvsegment(0,0))
+seg=sum(tr.segment,df.Dvsegment(0,0))#将音轨上的所有区段合并
+seg.filterout({"0","-"})#过滤掉连音符和分隔符
 lyrics=[]#歌词列表
 times=[]#开始时间列表
 stime=dvfile.tick2time(dvfile.pos2tick(1))#第1小节起始位置
 for note in seg.note:
-    if(not(note.hanzi in {"-",0})):
-        lyrics+=[note.hanzi]
-        times+=[dvfile.tick2time(note.start)-stime]
+    lyrics+=[note.hanzi]
+    times+=[dvfile.tick2time(note.start)-stime]
 lines=texteditor("".join(lyrics))
-#print(lines)
 cur=0#音符序号
 with open(filename[0:-2]+"lrc","w",encoding="utf8") as lrcfile:
     for line in lines:

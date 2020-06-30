@@ -1,7 +1,7 @@
 # dvscripts
 
 #### 介绍
-deepvocal相关小工具，主要基于 python dvfile 模块实现
+deepvocal相关小工具合集，主要基于 python dvfile 模块实现
 
 #### 软件架构
 软件架构说明

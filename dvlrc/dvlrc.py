@@ -16,7 +16,7 @@ def texteditor(text):
 
 print("dvlrc:由dv文件制作lrc歌词")
 if(len(sys.argv)==1):
-    filename=input("请输入dv文件位置")
+    filename=input("请输入dv文件位置").replace('"',"")
 else:
     filename=sys.argv[1].replace('"',"")
 dvfile=df.opendv(filename)

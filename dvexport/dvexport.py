@@ -5,7 +5,7 @@ import argparse
 
 #命令行参数解析
 par=argparse.ArgumentParser(description="dv转ust、nn、mid")
-par.add_argument("file",help="dv文件位置",default="")
+par.add_argument("file",type=str,nargs="?",help="输入的dv文件",default="")
 par.add_argument("-u","--ust",help="导出ust文件",action="store_true")
 par.add_argument("-n","--nn",help="导出nn文件",action="store_true")
 par.add_argument("-m","--mid",help="导出mid文件",action="store_true")
@@ -13,7 +13,7 @@ args=par.parse_args()
 
 #若命令行参数缺失，则询问用户
 if(args.file==""):
-    filename=input("请输入dv文件位置").replace('"','')
+    filename=input("请输入dv文件位置\n").replace('"','')
 else:
     filename=args.file.replace('"','')
 

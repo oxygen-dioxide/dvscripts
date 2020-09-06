@@ -9,6 +9,7 @@ par.add_argument("file",type=str,nargs="?",help="输入的dv文件",default="")
 par.add_argument("-u","--ust",help="导出ust文件",action="store_true")
 par.add_argument("-n","--nn",help="导出nn文件",action="store_true")
 par.add_argument("-m","--mid",help="导出mid文件",action="store_true")
+par.add_argument("-x","--xml",help="导出musicxml文件",action="store_true")
 args=par.parse_args()
 
 #若命令行参数缺失，则询问用户
@@ -18,14 +19,16 @@ else:
     filename=args.file.replace('"','')
 
 if(args.ust==args.nn==args.mid==False):
-    typestr=input("请选择输出文件类型，可多选\n1:ust 2:nn 3:mid\n")
+    typestr=input("请选择输出文件类型，可多选\n1:ust 2:nn 3:mid 4:musicxml\n")
     ust=("1" in typestr)
     nn=("2" in typestr)
     mid=("3" in typestr)
+    xml=("4" in typestr)
 else:
     ust=args.ust
     nn=args.nn
     mid=args.mid
+    xml=args.xml
 
 #读dv文件
 dv=df.opendv(filename)
@@ -49,3 +52,7 @@ if(ust or nn):
 #转mid文件
 if(mid):
     dv.to_midi_file().save(filename[:-3]+".mid")
+
+#转musicxml文件
+if(xml):
+    dv.to_music21_score(use_hanzi=True).write("xml",fp=filename[:-3]+".musicxml")

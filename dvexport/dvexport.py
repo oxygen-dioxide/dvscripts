@@ -18,7 +18,7 @@ if(args.file==""):
 else:
     filename=args.file.replace('"','')
 
-if(args.ust==args.nn==args.mid==False):
+if(args.ust==args.nn==args.mid==args.xml==False):
     typestr=input("请选择输出文件类型，可多选\n1:ust 2:nn 3:mid 4:musicxml\n")
     ust=("1" in typestr)
     nn=("2" in typestr)

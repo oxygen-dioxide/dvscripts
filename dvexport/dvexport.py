@@ -38,21 +38,34 @@ if(ust or nn):
     u=dv.to_ust_file()
     if(ust):
         if(len(u)==1):
-            u[0].save(filename[:-3]+".ust")
+            outputfilename=filename[:-3]+".ust"
+            u[0].save(outputfilename)
+            print("已输出 "+outputfilename)
         else:
             for (i,tr) in enumerate(u):
-                tr.save(filename[:-3]+str(i)+".ust")
+                outputfilename=filename[:-3]+str(i)+".ust"
+                tr.save(outputfilename)
+                print("已输出 "+outputfilename)
 #转nn文件
     if(nn):
         if(len(u)==1):
-            u[0].to_nn_file().save(filename[:-3]+".nn")
+            outputfilename=filename[:-3]+".nn"
+            u[0].to_nn_file().save(outputfilename)
+            print("已输出 "+outputfilename)
         else:
             for (i,tr) in enumerate(u):
-                tr.to_nn_file().save(filename[:-3]+str(i)+".nn")
+                outputfilename=filename[:-3]+str(i)+".nn"
+                tr.to_nn_file().save(outputfilename)
+                print("已输出 "+outputfilename)
 #转mid文件
 if(mid):
-    dv.to_midi_file().save(filename[:-3]+".mid")
+    outputfilename=filename[:-3]+".mid"
+    dv.to_midi_file().save(outputfilename)
+    print("已输出 "+outputfilename)
 
 #转musicxml文件
 if(xml):
-    dv.to_music21_score(use_hanzi=True).write("xml",fp=filename[:-3]+".musicxml")
+    #由于music21限制，这里输出的扩展名为xml而不是musicxml，如果能改成musicxml更好
+    outputfilename=filename[:-3]+".xml"
+    dv.to_music21_score(use_hanzi=True).write("musicxml",fp=outputfilename)
+    print("已输出 "+outputfilename)

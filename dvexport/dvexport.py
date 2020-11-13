@@ -65,7 +65,8 @@ if(mid):
 
 #转musicxml文件
 if(xml):
-    #由于music21限制，这里输出的扩展名为xml而不是musicxml，如果能改成musicxml更好
-    outputfilename=filename[:-3]+".xml"
-    dv.to_music21_score(use_hanzi=True).write("musicxml",fp=outputfilename)
+    import music21
+    outputfilename=filename[:-3]+".musicxml"
+    with open(outputfilename,"wb") as outputfile:
+        outputfile.write(music21.musicxml.m21ToXml.GeneralObjectExporter(dv.to_music21_score(use_hanzi=True)).parse())
     print("已输出 "+outputfilename)
